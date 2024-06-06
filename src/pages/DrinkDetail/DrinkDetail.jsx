@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   fetchGetDrinkById,
   fetchGetDrinksByCategoryId,
 } from "../../services/DrinkService";
+import { StoreContext } from "../../context/StoreContext";
 
 const DrinkDetail = () => {
   const [drink, setDrink] = useState({});
   const [drinks, setDrinks] = useState([]);
   const [drinkPrice, setDrinkPrice] = useState();
+
+  const { addToCart } = useContext(StoreContext);
 
   const navigator = useNavigate();
 
@@ -155,7 +158,7 @@ const DrinkDetail = () => {
                 </div>
                 <button
                   className="btn btn-warning w-100 fw-bold text-white"
-                  onClick={() => navigator("/cart")}
+                  onClick={() => addToCart(id)}
                 >
                   Đặt hàng ngay
                 </button>
