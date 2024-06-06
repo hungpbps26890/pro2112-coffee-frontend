@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   fetchGetDrinkById,
   fetchGetDrinksByCategoryId,
 } from "../../services/DrinkService";
 import { StoreContext } from "../../context/StoreContext";
+import { Field, Form, Formik } from "formik";
+import FormikControl from "../../components/FormControl/FormikControl";
 
 const DrinkDetail = () => {
   const [drink, setDrink] = useState({});
   const [drinks, setDrinks] = useState([]);
-  const [drinkPrice, setDrinkPrice] = useState();
+  const [drinkPrice, setDrinkPrice] = useState(0);
+  const [toppingPrice, seTtoppingPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState();
 
   const { addToCart } = useContext(StoreContext);
-
-  const navigator = useNavigate();
 
   const { id } = useParams();
 
@@ -23,6 +25,10 @@ const DrinkDetail = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    setTotalPrice(drinkPrice + toppingPrice);
+  }, [drinkPrice, toppingPrice]);
+
   const getDrinkById = async (id) => {
     const res = await fetchGetDrinkById(id);
 
@@ -30,6 +36,7 @@ const DrinkDetail = () => {
       const drink = res.result;
       console.log(drink);
       setDrink(drink);
+      setTotalPrice(drink.price);
       setDrinkPrice(drink.price);
       getDrinksByCategoryId(drink.category.id);
     }
@@ -42,6 +49,21 @@ const DrinkDetail = () => {
       setDrinks(res.result);
       console.log("Drink data by category: ", res);
     }
+  };
+
+  const initialValues = {
+    drinkId: id,
+    drinkSize: "",
+    toppings: [],
+    total: "",
+    note: "",
+  };
+
+  const onSubmit = (values) => {
+    console.log("Form values: ", values);
+    const cartItem = { ...values, total: totalPrice };
+    console.log("Cart item: ", cartItem);
+    addToCart(cartItem.drinkId, cartItem);
   };
 
   return (
@@ -98,70 +120,109 @@ const DrinkDetail = () => {
             <div className="col-md-6">
               <div className="card-body pt-0">
                 <h3 className="card-title">{drink.name}</h3>
-                <h4 className="card-title text-danger">{drinkPrice} đ</h4>
-                {drink.drinkSizes && drink.drinkSizes.length > 0 && (
-                  <div className="mb-2">
-                    <p className="card-text">Chọn size</p>
-                    <div className="d-flex flex-wrap">
-                      {drink.drinkSizes.map((drinkSize, index) => (
-                        <span key={`drinkSize-${index}`}>
-                          <input
-                            type="radio"
-                            className="btn-check"
-                            name="drinkSize"
-                            id={`drinkSize-${drinkSize.size.id}`}
-                            onClick={() => setDrinkPrice(drinkSize.price)}
-                          />
-                          <label
-                            className="btn btn-outline-secondary me-2 mb-2"
-                            htmlFor={`drinkSize-${drinkSize.size.id}`}
-                          >
-                            {drinkSize.size.name} +{" "}
-                            {drinkSize.price - drink.price} đ
-                          </label>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {drink.toppings && drink.toppings.length > 0 && (
-                  <div className="mb-2">
-                    <p className="card-text">Topping</p>
-                    <div className="d-flex flex-wrap">
-                      {drink.toppings.map((topping, index) => (
-                        <span key={`topping-${index}`}>
-                          <input
-                            type="checkbox"
-                            className="btn-check"
-                            name="topping"
-                            id={`topping-${topping.id}`}
-                          />
-                          <label
-                            className="btn btn-outline-secondary me-2 mb-2"
-                            htmlFor={`topping-${topping.id}`}
-                          >
-                            {topping.name} + {topping.price} đ
-                          </label>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="mb-3">
-                  <p className="card-text">Ghi chú</p>
-                  <textarea
-                    className="form-control"
-                    placeholder="Để lại ghi chú ở đây..."
-                  ></textarea>
-                </div>
-                <button
-                  className="btn btn-warning w-100 fw-bold text-white"
-                  onClick={() => addToCart(id)}
+                <h4 className="card-title text-danger">{totalPrice} đ</h4>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={onSubmit}
+                  validateOnChange={false}
                 >
-                  Đặt hàng ngay
-                </button>
+                  {(formik) => (
+                    <Form>
+                      {drink.drinkSizes && drink.drinkSizes.length > 0 && (
+                        <div className="mb-2">
+                          <p className="card-text">Chọn size</p>
+                          <div className="d-flex flex-wrap">
+                            <Field name="drinkSize">
+                              {({ field }) => {
+                                return drink.drinkSizes.map(
+                                  (drinkSize, index) => (
+                                    <span key={`drinkSize-${index}`}>
+                                      <input
+                                        type="radio"
+                                        className="btn-check"
+                                        {...field}
+                                        value={drinkSize.size.id}
+                                        id={`drinkSize-${drinkSize.size.id}`}
+                                        checked={
+                                          field.value ===
+                                          drinkSize.size.id.toString()
+                                        }
+                                        onClick={() => {
+                                          setDrinkPrice(drinkSize.price);
+                                        }}
+                                      />
+                                      <label
+                                        className="btn btn-outline-secondary me-2 mb-2"
+                                        htmlFor={`drinkSize-${drinkSize.size.id}`}
+                                      >
+                                        {drinkSize.size.name} +{" "}
+                                        {drinkSize.price - drink.price} đ
+                                      </label>
+                                    </span>
+                                  )
+                                );
+                              }}
+                            </Field>
+                          </div>
+                        </div>
+                      )}
+
+                      {drink.toppings && drink.toppings.length > 0 && (
+                        <div className="mb-2">
+                          <p className="card-text">Topping</p>
+                          <div className="d-flex flex-wrap">
+                            <Field name="toppings">
+                              {({ field }) => {
+                                return drink.toppings.map((topping, index) => (
+                                  <span key={`topping-${index}`}>
+                                    <Field
+                                      type="checkbox"
+                                      className="btn-check"
+                                      {...field}
+                                      value={topping.id}
+                                      id={`topping-${topping.id}`}
+                                      checked={field.value.includes(
+                                        topping.id.toString()
+                                      )}
+                                      onClick={(e) => {
+                                        e.target.checked
+                                          ? seTtoppingPrice(
+                                              (prev) => prev + topping.price
+                                            )
+                                          : seTtoppingPrice(
+                                              (prev) => prev - topping.price
+                                            );
+                                      }}
+                                    />
+                                    <label
+                                      className="btn btn-outline-secondary me-2 mb-2"
+                                      htmlFor={`topping-${topping.id}`}
+                                    >
+                                      {topping.name} + {topping.price} đ
+                                    </label>
+                                  </span>
+                                ));
+                              }}
+                            </Field>
+                          </div>
+                        </div>
+                      )}
+
+                      <FormikControl
+                        control="textarea"
+                        label="Ghi chú"
+                        name="note"
+                      />
+
+                      <button
+                        className="btn btn-warning w-100 fw-bold text-white"
+                        type="submit"
+                      >
+                        Đặt hàng ngay
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
               </div>
             </div>
           </div>
