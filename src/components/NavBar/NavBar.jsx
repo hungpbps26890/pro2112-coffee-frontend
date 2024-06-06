@@ -40,6 +40,11 @@ const NavBar = () => {
                 Order
               </a>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={"/login"}>
+                Login
+              </Link>
+            </li>
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -51,11 +56,6 @@ const NavBar = () => {
                 Welcome, Username
               </a>
               <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Log in
-                  </a>
-                </li>
                 <li>
                   <a className="dropdown-item" href="#">
                     Register
