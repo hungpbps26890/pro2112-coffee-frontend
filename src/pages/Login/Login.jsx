@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { StoreContext } from "../../context/StoreContext";
+import { postLogin } from "../../services/AuthService";
 
 const Login = () => {
+  const { token, setToken } = useContext(StoreContext);
+
+  const navigator = useNavigate();
+
   const initialValues = {
-    email: "",
+    username: "",
     password: "",
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
+    username: Yup.string().required("Required"),
     password: Yup.string()
       .required("Required")
       .min(8, "Password must be at least 8 characters"),
@@ -19,6 +25,18 @@ const Login = () => {
 
   const onSubmit = (values) => {
     console.log("Form values: ", values);
+    handleLogin(values);
+  };
+
+  const handleLogin = async (data) => {
+    const res = await postLogin(data);
+
+    if (res && res.result) {
+      const token = res.result.token;
+      setToken(token);
+      localStorage.setItem("token", token);
+      navigator("/home");
+    }
   };
 
   return (
@@ -36,7 +54,11 @@ const Login = () => {
           >
             {(formik) => (
               <Form>
-                <FormikControl control="input" label="Email" name="email" />
+                <FormikControl
+                  control="input"
+                  label="Username"
+                  name="username"
+                />
                 <FormikControl
                   control="input"
                   type="password"

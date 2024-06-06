@@ -2,15 +2,21 @@ import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
+import { postRegister } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigator = useNavigate();
+
   const initialValues = {
+    username: "",
     email: "",
     password: "",
     confirmedPassword: "",
   };
 
   const validationSchema = Yup.object({
+    username: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .required("Required")
@@ -23,6 +29,16 @@ const Register = () => {
   const onSubmit = (values) => {
     console.log("Form values: ", values);
     console.log("Saved data: ", JSON.stringify(values));
+    handleRegister(values);
+  };
+
+  const handleRegister = async (data) => {
+    const res = await postRegister(data);
+
+    if (res && res.result) {
+      console.log("Register user: ", res.result);
+      navigator("/login");
+    }
   };
 
   return (
@@ -40,6 +56,11 @@ const Register = () => {
           >
             {(formik) => (
               <Form>
+                <FormikControl
+                  control="input"
+                  label="Username"
+                  name="username"
+                />
                 <FormikControl control="input" label="Email" name="email" />
                 <FormikControl
                   control="input"

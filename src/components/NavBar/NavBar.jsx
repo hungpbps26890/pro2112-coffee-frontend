@@ -1,6 +1,22 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { StoreContext } from "../../context/StoreContext";
+import { postLogout } from "../../services/AuthService";
 const NavBar = () => {
+  const { token, setToken } = useContext(StoreContext);
+
+  const navigator = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await postLogout({ token });
+
+    if (res) {
+      localStorage.removeItem("token");
+      setToken("");
+      navigator("/home");
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div className="container">
@@ -30,47 +46,57 @@ const NavBar = () => {
                 Menu
               </NavLink>
             </li>
-            <li className="nav-item">
+          </ul>
+          <ul className="navbar-nav">
+            <li className="nav-item align-content-center">
               <Link className="nav-link" to={"/cart"}>
-                Cart
+                <i className="fa-solid fa-cart-shopping"></i>
               </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Order
-              </a>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to={"/login"}>
-                Login
-              </Link>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Welcome, Username
-              </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Profile
-                  </a>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Log out
-                  </a>
-                </li>
-              </ul>
-            </li>
+            {!token ? (
+              <li className="nav-item">
+                <Link className="nav-link " to={"/login"}>
+                  <button
+                    className="btn btn-outline-secondary rounded-5"
+                    style={{ fontSize: 13, fontWeight: 500 }}
+                  >
+                    Login
+                  </button>
+                </Link>
+              </li>
+            ) : (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i className="fa-solid fa-user"></i>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-lg-end">
+                  <li>
+                    <NavLink className="dropdown-item" to={"/profile"}>
+                      Profile
+                    </NavLink>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Order
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      Log out
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            )}
           </ul>
         </div>
       </div>
