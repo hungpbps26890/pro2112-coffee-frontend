@@ -8,6 +8,7 @@ import Cart from "./pages/Cart/Cart";
 import Footer from "./components/Footer/Footer";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import FormContainer from "./pages/FormContainer/FormContainer";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/form" element={<FormContainer />} />
       </Routes>
       <Footer />
     </>
