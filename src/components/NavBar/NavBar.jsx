@@ -58,11 +58,6 @@ const NavBar = () => {
               <ul className="dropdown-menu">
                 <li>
                   <a className="dropdown-item" href="#">
-                    Register
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
                     Profile
                   </a>
                 </li>
