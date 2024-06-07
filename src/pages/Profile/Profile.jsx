@@ -60,47 +60,47 @@ const Profile = () => {
 
   return (
     <div className="container my-3">
-      <div className="card w-75 mx-auto">
-        <div className="card-header">
-          <h4>Profile</h4>
-        </div>
-        <div className="card-body">
-          <Formik
-            initialValues={myInfo || initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-            validateOnChange={false}
-            enableReinitialize
-          >
-            {(formik) => (
-              <Form>
-                <FormikControl control="input" label="Email" name="email" />
+      <div className="row">
+        <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
+          <div className="card-body">
+            <h3 className="text-center">Profile</h3>
+            <Formik
+              initialValues={myInfo || initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+              validateOnChange={false}
+              enableReinitialize
+            >
+              {(formik) => (
+                <Form>
+                  <FormikControl control="input" label="Email" name="email" />
 
-                <FormikControl
-                  control="input"
-                  label="First name"
-                  name="firstName"
-                />
+                  <FormikControl
+                    control="input"
+                    label="First name"
+                    name="firstName"
+                  />
 
-                <FormikControl
-                  control="input"
-                  label="Last name"
-                  name="lastName"
-                />
+                  <FormikControl
+                    control="input"
+                    label="Last name"
+                    name="lastName"
+                  />
 
-                <FormikControl control="date" label="Birth date" name="dob" />
+                  <FormikControl control="date" label="Birth date" name="dob" />
 
-                <div className="mb-3">
-                  <button type="submit" className="btn btn-primary me-2">
-                    Save
-                  </button>
-                  <button type="reset" className="btn btn-secondary">
-                    Cancel
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+                  <div className="mb-3">
+                    <button type="submit" className="btn btn-primary me-2">
+                      Save
+                    </button>
+                    <button type="reset" className="btn btn-secondary">
+                      Cancel
+                    </button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
         </div>
       </div>
     </div>

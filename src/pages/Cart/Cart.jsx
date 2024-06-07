@@ -2,10 +2,10 @@ import React from "react";
 
 const Cart = () => {
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row mb-3">
         <div className="card border-0">
-          <h3>Your cart</h3>
+          <h4>Your cart</h4>
           <div className="table-responsive">
             <table className="table table-striped table-hover">
               <thead>

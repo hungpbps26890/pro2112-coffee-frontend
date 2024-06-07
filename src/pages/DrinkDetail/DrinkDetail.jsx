@@ -67,9 +67,9 @@ const DrinkDetail = () => {
   };
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 shadow-sm rounded py-3">
       <div className="row">
-        <div className="card mb-3 border-0">
+        <div className="card mb-3 border-0 ">
           <div className="row g-0">
             <div className="col-md-6">
               <div id="carouselExample" className="carousel slide">

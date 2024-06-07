@@ -68,8 +68,7 @@ const Menu = () => {
     <div className="container mt-3">
       <div className="row">
         <div className="col-md-3">
-          <h3>Loại đồ uống</h3>
-          <div className="list-group list-group-flush">
+          <div className="list-group list-group-flush shadow-sm rounded">
             {categories &&
               categories.length &&
               categories.map((category, index) => (
@@ -83,9 +82,9 @@ const Menu = () => {
               ))}
           </div>
         </div>
-        <div className="col-md-9">
+        <div className="col-md-9 shadow-sm rounded">
           <div className="category-drink row">
-            <h3>{category ? category.name : "Menu"}</h3>
+            <h4>{category ? category.name : "Menu"}</h4>
             {drinks &&
               drinks.length &&
               drinks.map((drink, index) => (

@@ -22,9 +22,9 @@ const Home = () => {
   return (
     <>
       <HomeBannerCarousel />
-      <div className="container">
-        <h3>Popular Drinks</h3>
-        <div className="popular-drink row">
+      <div className="container shadow-sm rounded pt-3">
+        <h4>Popular Drinks</h4>
+        <div className="popular-drink row  ">
           {drinks &&
             drinks.length &&
             drinks.map((drink, index) => (

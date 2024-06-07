@@ -15,17 +15,19 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/menu/category/:id" element={<Menu />} />
-        <Route path="/drinks/:id" element={<DrinkDetail />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/form" element={<FormContainer />} />
-      </Routes>
+      <div className="main min-vh-100 mb-3">
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/menu/category/:id" element={<Menu />} />
+          <Route path="/drinks/:id" element={<DrinkDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/form" element={<FormContainer />} />
+        </Routes>
+      </div>
       <Footer />
     </>
   );
