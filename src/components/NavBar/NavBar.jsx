@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 import { postLogout } from "../../services/AuthService";
 const NavBar = () => {
-  const { token, setToken } = useContext(StoreContext);
+  const { token, setToken, cart } = useContext(StoreContext);
 
   const navigator = useNavigate();
 
@@ -48,11 +48,23 @@ const NavBar = () => {
             </li>
           </ul>
           <ul className="navbar-nav">
-            <li className="nav-item align-content-center">
-              <Link className="nav-link" to={"/cart"}>
-                <i className="fa-solid fa-cart-shopping"></i>
-              </Link>
-            </li>
+            {token && (
+              <li className="nav-item align-content-center">
+                <Link className="nav-link" to={"/cart"}>
+                  <i className="fa-solid fa-cart-shopping position-relative">
+                    {cart.totalItems > 0 && (
+                      <span
+                        className="position-absolute top-0 start-100 translate-middle badge rounded-circle border-light bg-danger"
+                        style={{ fontSize: 7 }}
+                      >
+                        {cart.totalItems}
+                        <span className="visually-hidden">unread messages</span>
+                      </span>
+                    )}
+                  </i>
+                </Link>
+              </li>
+            )}
             {!token ? (
               <li className="nav-item">
                 <Link className="nav-link " to={"/login"}>

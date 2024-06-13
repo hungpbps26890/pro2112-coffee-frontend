@@ -7,7 +7,7 @@ import { StoreContext } from "../../context/StoreContext";
 import { postLogin } from "../../services/AuthService";
 
 const Login = () => {
-  const { token, setToken } = useContext(StoreContext);
+  const { setToken } = useContext(StoreContext);
 
   const navigator = useNavigate();
 

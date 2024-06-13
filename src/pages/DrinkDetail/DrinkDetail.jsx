@@ -6,7 +6,6 @@ import {
 } from "../../services/DrinkService";
 import { StoreContext } from "../../context/StoreContext";
 import { Field, Form, Formik } from "formik";
-import FormikControl from "../../components/FormControl/FormikControl";
 
 const DrinkDetail = () => {
   const [drink, setDrink] = useState({});
@@ -14,6 +13,12 @@ const DrinkDetail = () => {
   const [drinkPrice, setDrinkPrice] = useState(0);
   const [toppingPrice, seTtoppingPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState();
+  const [initialValues, setInitialValues] = useState({
+    drinkId: "",
+    sizeId: "",
+    toppings: [],
+    price: "",
+  });
 
   const { addToCart } = useContext(StoreContext);
 
@@ -24,6 +29,8 @@ const DrinkDetail = () => {
       getDrinkById(id);
     }
   }, [id]);
+
+  console.log("Initial Values: ", initialValues);
 
   useEffect(() => {
     setTotalPrice(drinkPrice + toppingPrice);
@@ -39,6 +46,13 @@ const DrinkDetail = () => {
       setTotalPrice(drink.price);
       setDrinkPrice(drink.price);
       getDrinksByCategoryId(drink.category.id);
+
+      setInitialValues({
+        drinkId: id,
+        sizeId: "",
+        toppings: [],
+        price: "",
+      });
     }
   };
 
@@ -51,19 +65,11 @@ const DrinkDetail = () => {
     }
   };
 
-  const initialValues = {
-    drinkId: id,
-    drinkSize: "",
-    toppings: [],
-    total: "",
-    note: "",
-  };
-
   const onSubmit = (values) => {
     console.log("Form values: ", values);
-    const cartItem = { ...values, total: totalPrice };
+    const cartItem = { ...values, drinkId: id, price: totalPrice, quantity: 1 };
     console.log("Cart item: ", cartItem);
-    addToCart(cartItem.drinkId, cartItem);
+    addToCart(cartItem);
   };
 
   return (
@@ -125,6 +131,7 @@ const DrinkDetail = () => {
                   initialValues={initialValues}
                   onSubmit={onSubmit}
                   validateOnChange={false}
+                  enableReinitialize
                 >
                   {(formik) => (
                     <Form>
@@ -132,7 +139,7 @@ const DrinkDetail = () => {
                         <div className="mb-2">
                           <p className="card-text">Chọn size</p>
                           <div className="d-flex flex-wrap">
-                            <Field name="drinkSize">
+                            <Field name="sizeId">
                               {({ field }) => {
                                 return drink.drinkSizes.map(
                                   (drinkSize, index) => (
@@ -207,12 +214,6 @@ const DrinkDetail = () => {
                           </div>
                         </div>
                       )}
-
-                      <FormikControl
-                        control="textarea"
-                        label="Ghi chú"
-                        name="note"
-                      />
 
                       <button
                         className="btn btn-warning w-100 fw-bold text-white"

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./pages/Home/Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Menu from "./pages/Menu/Menu";
 import DrinkDetail from "./pages/DrinkDetail/DrinkDetail";
 import Cart from "./pages/Cart/Cart";
@@ -12,6 +12,11 @@ import FormContainer from "./pages/FormContainer/FormContainer";
 import Profile from "./pages/Profile/Profile";
 
 const App = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
   return (
     <>
       <NavBar />
