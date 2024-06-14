@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
+import { NumericFormat } from "react-number-format";
 
 const Cart = () => {
   const { cart, updateItemQuantity, removeFromCart } = useContext(StoreContext);
@@ -19,6 +20,10 @@ const Cart = () => {
       const data = { id, quantity: quantity - 1 };
       updateItemQuantity(data);
     }
+  };
+
+  const handleRemoveFromCart = (id) => {
+    removeFromCart(id);
   };
 
   return (
@@ -62,7 +67,14 @@ const Cart = () => {
                           {cartItem.drink.name}
                         </Link>
                       </td>
-                      <td>{cartItem.price / cartItem.quantity} đ</td>
+                      <td>
+                        <NumericFormat
+                          value={cartItem.price / cartItem.quantity}
+                          displayType="text"
+                          thousandSeparator=","
+                          suffix=" đ"
+                        />
+                      </td>
                       <td>
                         <span className="badge rounded-pill text-bg-secondary py-2 px-4">
                           {cartItem.size && cartItem.size.character}
@@ -110,11 +122,18 @@ const Cart = () => {
                           </button>
                         </div>
                       </td>
-                      <th>{cartItem.price} đ</th>
+                      <td>
+                        <NumericFormat
+                          value={cartItem.price}
+                          displayType="text"
+                          thousandSeparator=","
+                          suffix=" đ"
+                        />
+                      </td>
                       <td>
                         <button
                           className="btn btn-outline-danger"
-                          onClick={() => removeFromCart(cartItem.id)}
+                          onClick={() => handleRemoveFromCart(cartItem.id)}
                         >
                           <i className="fa-regular fa-trash-can"></i>
                         </button>
@@ -138,7 +157,14 @@ const Cart = () => {
               </div>
               <div className="d-flex justify-content-between">
                 <p className="cart-text">Subtotal</p>
-                <p className="cart-text">{cart.totalPrice} đ</p>
+                <p className="cart-text">
+                  <NumericFormat
+                    value={cart.totalPrice}
+                    displayType="text"
+                    thousandSeparator=","
+                    suffix=" đ"
+                  />
+                </p>
               </div>
 
               <div className="d-flex justify-content-between">
@@ -148,7 +174,14 @@ const Cart = () => {
               <hr />
               <div className="d-flex justify-content-between">
                 <h5 className="cart-text">Grand Total</h5>
-                <h5 className="cart-text text-danger">{cart.totalPrice} đ</h5>
+                <h5 className="cart-text text-danger">
+                  <NumericFormat
+                    value={cart.totalPrice}
+                    displayType="text"
+                    thousandSeparator=","
+                    suffix=" đ"
+                  />
+                </h5>
               </div>
               <hr />
             </div>

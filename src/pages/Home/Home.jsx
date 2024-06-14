@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchGetAllDrinks } from "../../services/DrinkService";
 import { Link } from "react-router-dom";
 import HomeBannerCarousel from "./HomeBannerCarousel";
+import { NumericFormat } from "react-number-format";
 
 const Home = () => {
   const [drinks, setDrinks] = useState([]);
@@ -42,7 +43,13 @@ const Home = () => {
                     <Link to={`/drinks/${drink.id}`} className="nav-link">
                       <h5 className="card-title">{drink.name}</h5>
                     </Link>
-                    <p className="card-text text-danger">{drink.price} đ</p>
+                    <NumericFormat
+                      className="card-text text-secondary"
+                      value={drink.price}
+                      displayType="text"
+                      thousandSeparator=","
+                      suffix=" đ"
+                    />
                   </div>
                 </div>
               </div>

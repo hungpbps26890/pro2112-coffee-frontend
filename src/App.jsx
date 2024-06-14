@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import NavBar from "./components/NavBar/NavBar";
 import Home from "./pages/Home/Home";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -10,6 +13,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import FormContainer from "./pages/FormContainer/FormContainer";
 import Profile from "./pages/Profile/Profile";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -30,10 +34,26 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/form" element={<FormContainer />} />
         </Routes>
       </div>
       <Footer />
+
+      {/* Tostify */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition:Bounce
+      />
     </>
   );
 };

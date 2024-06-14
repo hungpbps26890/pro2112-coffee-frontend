@@ -6,6 +6,8 @@ import {
 } from "../../services/DrinkService";
 import { StoreContext } from "../../context/StoreContext";
 import { Field, Form, Formik } from "formik";
+import { toast } from "react-toastify";
+import { NumericFormat } from "react-number-format";
 
 const DrinkDetail = () => {
   const [drink, setDrink] = useState({});
@@ -126,7 +128,16 @@ const DrinkDetail = () => {
             <div className="col-md-6">
               <div className="card-body pt-0">
                 <h3 className="card-title">{drink.name}</h3>
-                <h4 className="card-title text-danger">{totalPrice} đ</h4>
+                <h4 className="card-title" style={{ color: "#E57905" }}>
+                  <NumericFormat
+                    className="card-text"
+                    value={totalPrice}
+                    displayType="text"
+                    thousandSeparator=","
+                    suffix=" đ"
+                  />
+                </h4>
+
                 <Formik
                   initialValues={initialValues}
                   onSubmit={onSubmit}
@@ -137,7 +148,7 @@ const DrinkDetail = () => {
                     <Form>
                       {drink.drinkSizes && drink.drinkSizes.length > 0 && (
                         <div className="mb-2">
-                          <p className="card-text">Chọn size</p>
+                          <p className="card-text">Size</p>
                           <div className="d-flex flex-wrap">
                             <Field name="sizeId">
                               {({ field }) => {
@@ -216,10 +227,11 @@ const DrinkDetail = () => {
                       )}
 
                       <button
-                        className="btn btn-warning w-100 fw-bold text-white"
+                        className="btn btn-outline-white w-100 fw-bold text-white py-2"
+                        style={{ backgroundColor: "#E57905" }}
                         type="submit"
                       >
-                        Đặt hàng ngay
+                        Add to cart
                       </button>
                     </Form>
                   )}
@@ -230,12 +242,12 @@ const DrinkDetail = () => {
         </div>
         <div className="card border-0">
           <hr />
-          <h4 className="card-title">Mô tả sản phẩm</h4>
+          <h4 className="card-title">Description</h4>
           <p className="card-text">{drink.description}</p>
           <hr />
         </div>
         <div className="card border-0">
-          <h4 className="card-title">Sản phẩm liên quan</h4>
+          <h4 className="card-title">Related Drink</h4>
           <div className="related-drink row">
             {drinks &&
               drinks.length &&
@@ -254,7 +266,13 @@ const DrinkDetail = () => {
                       <Link to={`/drinks/${drink.id}`} className="nav-link">
                         <h5 className="card-title">{drink.name}</h5>
                       </Link>
-                      <p className="card-text text-danger">{drink.price} đ</p>
+                      <NumericFormat
+                        className="card-text text-secondary"
+                        value={drink.price}
+                        displayType="text"
+                        thousandSeparator=","
+                        suffix=" đ"
+                      />
                     </div>
                   </div>
                 </div>

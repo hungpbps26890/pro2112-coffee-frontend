@@ -3,6 +3,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { fetchGetMyInfo, putUpdateMyInfo } from "../../services/UserService";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [myInfo, setMyInfo] = useState();
@@ -21,6 +22,7 @@ const Profile = () => {
 
       setMyInfo({
         email: myInfo.email,
+        phoneNumber: myInfo.phoneNumber,
         firstName: myInfo.firstName ? myInfo.firstName : "",
         lastName: myInfo.lastName ? myInfo.lastName : "",
         dob: myInfo.dob,
@@ -30,13 +32,19 @@ const Profile = () => {
 
   const initialValues = {
     email: "",
+    phoneNumber: "",
     firstName: "",
     lastName: "",
     dob: null,
   };
 
+  const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
+
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
+    phoneNumber: Yup.string()
+      .matches(regexPhoneNumber, "Phone number is not valid")
+      .required("Required"),
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
     dob: Yup.date().required("Required"),
@@ -54,7 +62,12 @@ const Profile = () => {
 
     if (res && res.result) {
       console.log("Updated user info: ", res.result);
+      toast.success(res.message);
       getMyInfo();
+    } else {
+      console.log(res.response.data);
+      const message = res.response.data.message;
+      toast.error(message);
     }
   };
 
@@ -74,6 +87,12 @@ const Profile = () => {
               {(formik) => (
                 <Form>
                   <FormikControl control="input" label="Email" name="email" />
+
+                  <FormikControl
+                    control="input"
+                    label="Phone number"
+                    name="phoneNumber"
+                  />
 
                   <FormikControl
                     control="input"

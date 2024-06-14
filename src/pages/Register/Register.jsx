@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { postRegister } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const navigator = useNavigate();
@@ -11,13 +12,19 @@ const Register = () => {
   const initialValues = {
     username: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmedPassword: "",
   };
 
+  const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
+
   const validationSchema = Yup.object({
     username: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
+    phoneNumber: Yup.string()
+      .matches(regexPhoneNumber, "Phone number is not valid")
+      .required("Required"),
     password: Yup.string()
       .required("Required")
       .min(8, "Password must be at least 8 characters"),
@@ -38,6 +45,10 @@ const Register = () => {
     if (res && res.result) {
       console.log("Register user: ", res.result);
       navigator("/login");
+    } else {
+      console.log(res.response.data);
+      const message = res.response.data.message;
+      toast.error(message);
     }
   };
 
@@ -61,6 +72,11 @@ const Register = () => {
                     name="username"
                   />
                   <FormikControl control="input" label="Email" name="email" />
+                  <FormikControl
+                    control="input"
+                    label="Phone number"
+                    name="phoneNumber"
+                  />
                   <FormikControl
                     control="input"
                     type="password"

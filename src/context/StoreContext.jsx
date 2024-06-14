@@ -6,6 +6,7 @@ import {
   putUpdateItemQuantity,
 } from "../services/CartService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 
@@ -43,9 +44,11 @@ const StoreContextProvider = (props) => {
       if (res && res.result) {
         console.log("Cart item: ", res.result);
         getCartByUser();
+        toast.success("Add drink to cart!");
       }
     } else {
       navigator("/login");
+      toast.error("Please login!");
     }
   };
 

@@ -8,6 +8,7 @@ import {
   fetchGetAllDrinks,
   fetchGetDrinksByCategoryId,
 } from "../../services/DrinkService";
+import { NumericFormat } from "react-number-format";
 
 const Menu = () => {
   const [categories, setCategories] = useState([]);
@@ -102,7 +103,13 @@ const Menu = () => {
                       <Link to={`/drinks/${drink.id}`} className="nav-link">
                         <h5 className="card-title">{drink.name}</h5>
                       </Link>
-                      <p className="card-text text-danger">{drink.price} đ</p>
+                      <NumericFormat
+                        className="card-text text-secondary"
+                        value={drink.price}
+                        displayType="text"
+                        thousandSeparator=","
+                        suffix=" đ"
+                      />
                     </div>
                   </div>
                 </div>

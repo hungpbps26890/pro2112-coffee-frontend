@@ -94,6 +94,11 @@ const NavBar = () => {
                     </NavLink>
                   </li>
                   <li>
+                    <NavLink className="dropdown-item" to={"/change-password"}>
+                      Change Password
+                    </NavLink>
+                  </li>
+                  <li>
                     <a className="dropdown-item" href="#">
                       Order
                     </a>

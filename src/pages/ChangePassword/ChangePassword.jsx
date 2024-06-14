@@ -1,45 +1,53 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
-import { Link, useNavigate } from "react-router-dom";
-import { StoreContext } from "../../context/StoreContext";
-import { postLogin } from "../../services/AuthService";
+import { putChangePassword } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import TextError from "../../components/TextError/TextError";
 
-const Login = () => {
-  const { setToken } = useContext(StoreContext);
-
+const ChangePassword = () => {
   const navigator = useNavigate();
 
+  const [passwordInvalid, setPasswordInvalid] = useState("");
+
   const initialValues = {
-    username: "",
     password: "",
+    newPassword: "",
+    confirmedNewPassword: "",
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().required("Required"),
     password: Yup.string()
       .required("Required")
       .min(8, "Password must be at least 8 characters"),
+    newPassword: Yup.string()
+      .required("Required")
+      .min(8, "Password must be at least 8 characters"),
+    confirmedNewPassword: Yup.string()
+      .required("Required")
+      .oneOf(
+        [Yup.ref("newPassword")],
+        "Confirmed password must be match new password"
+      ),
   });
 
   const onSubmit = (values) => {
     console.log("Form values: ", values);
-    handleLogin(values);
+    handleChangePassword(values);
   };
 
-  const handleLogin = async (data) => {
-    const res = await postLogin(data);
+  const handleChangePassword = async (data) => {
+    const res = await putChangePassword(data);
 
-    if (res && res.result) {
-      const token = res.result.token;
-      setToken(token);
-      localStorage.setItem("token", token);
-      navigator("/home");
+    if (res && res.code === 1000) {
+      toast.success(res.message);
+      navigator("/profile");
     } else {
       const message = res.response.data.message;
       toast.error(message);
+      setPasswordInvalid(message);
     }
   };
 
@@ -48,7 +56,7 @@ const Login = () => {
       <div className="row">
         <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
           <div className="card-body">
-            <h3 className="text-center">Login</h3>
+            <h3 className="text-center">Register</h3>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -57,11 +65,11 @@ const Login = () => {
             >
               {(formik) => (
                 <Form>
-                  <FormikControl
-                    control="input"
-                    label="Username"
-                    name="username"
-                  />
+                  {passwordInvalid && (
+                    <div class="alert alert-danger" role="alert">
+                      {passwordInvalid}
+                    </div>
+                  )}
                   <FormikControl
                     control="input"
                     type="password"
@@ -69,19 +77,27 @@ const Login = () => {
                     name="password"
                   />
 
+                  <FormikControl
+                    control="input"
+                    type="password"
+                    label="New Password"
+                    name="newPassword"
+                  />
+
+                  <FormikControl
+                    control="input"
+                    type="password"
+                    label="Confirmed password"
+                    name="confirmedNewPassword"
+                  />
+
                   <div className="mb-3">
                     <button type="submit" className="btn btn-primary me-2">
-                      Login
+                      Save
                     </button>
                     <button type="reset" className="btn btn-secondary">
                       Cancel
                     </button>
-                  </div>
-                  <div className="form-text">
-                    Create a new account?{" "}
-                    <Link to={"/register"} className="text-decoration-none">
-                      Click here
-                    </Link>
                   </div>
                 </Form>
               )}
@@ -93,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ChangePassword;
