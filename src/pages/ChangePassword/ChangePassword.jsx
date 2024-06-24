@@ -66,14 +66,14 @@ const ChangePassword = () => {
               {(formik) => (
                 <Form>
                   {passwordInvalid && (
-                    <div class="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert">
                       {passwordInvalid}
                     </div>
                   )}
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Password"
+                    label="Current Password"
                     name="password"
                   />
 
@@ -87,7 +87,7 @@ const ChangePassword = () => {
                   <FormikControl
                     control="input"
                     type="password"
-                    label="Confirmed password"
+                    label="Confirmed Password"
                     name="confirmedNewPassword"
                   />
 

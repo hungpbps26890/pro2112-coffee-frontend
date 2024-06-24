@@ -86,7 +86,12 @@ const Profile = () => {
             >
               {(formik) => (
                 <Form>
-                  <FormikControl control="input" label="Email" name="email" />
+                  <FormikControl
+                    control="input"
+                    label="Email"
+                    name="email"
+                    readOnly
+                  />
 
                   <FormikControl
                     control="input"

@@ -46,6 +46,14 @@ const NavBar = () => {
                 Menu
               </NavLink>
             </li>
+
+            {token && (
+              <li className="nav-item">
+                <NavLink className="nav-link" to={"/order"}>
+                  Order
+                </NavLink>
+              </li>
+            )}
           </ul>
           <ul className="navbar-nav">
             {token && (
@@ -97,11 +105,6 @@ const NavBar = () => {
                     <NavLink className="dropdown-item" to={"/change-password"}>
                       Change Password
                     </NavLink>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Order
-                    </a>
                   </li>
                   <li>
                     <hr className="dropdown-divider" />

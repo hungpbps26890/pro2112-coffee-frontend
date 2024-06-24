@@ -76,7 +76,7 @@ const Menu = () => {
                 <NavLink
                   key={`category-${index}`}
                   to={`/menu/category/${category.id}`}
-                  className="list-group-item list-group-item-action border-0"
+                  className="list-group-item  list-group-item-light list-group-item-action border-0"
                 >
                   {category.name}
                 </NavLink>

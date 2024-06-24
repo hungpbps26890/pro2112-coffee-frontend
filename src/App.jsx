@@ -14,6 +14,11 @@ import Register from "./pages/Register/Register";
 import FormContainer from "./pages/FormContainer/FormContainer";
 import Profile from "./pages/Profile/Profile";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import Checkout from "./pages/Checkout/Checkout";
+import Order from "./pages/Order/Order";
+import OrderDetails from "./pages/Order/OrderDetails";
+import OAuth2LoginHandler from "./pages/Login/OAuth2LoginHandler";
+import Address from "./components/Address/Address";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -35,14 +40,19 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/order-details/:id" element={<OrderDetails />} />
+          <Route path="/oauth2/redirect" element={<OAuth2LoginHandler />} />
           <Route path="/form" element={<FormContainer />} />
+          <Route path="/address" element={<Address />} />
         </Routes>
       </div>
       <Footer />
 
       {/* Tostify */}
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}

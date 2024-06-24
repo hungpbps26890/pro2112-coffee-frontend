@@ -10,9 +10,10 @@ const Register = () => {
   const navigator = useNavigate();
 
   const initialValues = {
-    username: "",
     email: "",
     phoneNumber: "",
+    firstName: "",
+    lastName: "",
     password: "",
     confirmedPassword: "",
   };
@@ -20,7 +21,8 @@ const Register = () => {
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
-    username: Yup.string().required("Required"),
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     phoneNumber: Yup.string()
       .matches(regexPhoneNumber, "Phone number is not valid")
@@ -66,12 +68,23 @@ const Register = () => {
             >
               {(formik) => (
                 <Form>
-                  <FormikControl
-                    control="input"
-                    label="Username"
-                    name="username"
-                  />
                   <FormikControl control="input" label="Email" name="email" />
+                  <div className="row">
+                    <div className="col-6">
+                      <FormikControl
+                        control="input"
+                        label="Firstname"
+                        name="firstName"
+                      />
+                    </div>
+                    <div className="col-6">
+                      <FormikControl
+                        control="input"
+                        label="Lastname"
+                        name="lastName"
+                      />
+                    </div>
+                  </div>
                   <FormikControl
                     control="input"
                     label="Phone number"

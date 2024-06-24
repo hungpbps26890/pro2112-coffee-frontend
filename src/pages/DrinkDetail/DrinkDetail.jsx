@@ -6,7 +6,6 @@ import {
 } from "../../services/DrinkService";
 import { StoreContext } from "../../context/StoreContext";
 import { Field, Form, Formik } from "formik";
-import { toast } from "react-toastify";
 import { NumericFormat } from "react-number-format";
 
 const DrinkDetail = () => {
@@ -227,7 +226,7 @@ const DrinkDetail = () => {
                       )}
 
                       <button
-                        className="btn btn-outline-white w-100 fw-bold text-white py-2"
+                        className="btn btn-outline-white w-100 text-white py-2 mt-4"
                         style={{ backgroundColor: "#E57905" }}
                         type="submit"
                       >

@@ -73,6 +73,7 @@ const StoreContextProvider = (props) => {
   const contextValue = {
     cart,
     setCart,
+    getCartByUser,
     addToCart,
     updateItemQuantity,
     removeFromCart,

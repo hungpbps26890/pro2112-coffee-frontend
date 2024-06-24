@@ -13,12 +13,12 @@ const Login = () => {
   const navigator = useNavigate();
 
   const initialValues = {
-    username: "",
+    email: "",
     password: "",
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .required("Required")
       .min(8, "Password must be at least 8 characters"),
@@ -43,6 +43,14 @@ const Login = () => {
     }
   };
 
+  const API_BASE_URL = "http://localhost:8080";
+  const OAUTH2_REDIRECT_URI = "http://localhost:2000/oauth2/redirect";
+
+  const GOOGLE_AUTH_URL =
+    API_BASE_URL +
+    "/oauth2/authorize/google?redirect_uri=" +
+    OAUTH2_REDIRECT_URI;
+
   return (
     <div className="container my-3">
       <div className="row">
@@ -57,11 +65,7 @@ const Login = () => {
             >
               {(formik) => (
                 <Form>
-                  <FormikControl
-                    control="input"
-                    label="Username"
-                    name="username"
-                  />
+                  <FormikControl control="input" label="Email" name="email" />
                   <FormikControl
                     control="input"
                     type="password"
@@ -86,6 +90,13 @@ const Login = () => {
                 </Form>
               )}
             </Formik>
+            <div className="social-login mt-2">
+              <p className="mb-2 form-text">Or sign in with</p>
+              <a className="btn btn-outline-primary" href={GOOGLE_AUTH_URL}>
+                <i className="fa-brands fa-google"></i>
+                <span className="fw-500 ms-2">Google</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

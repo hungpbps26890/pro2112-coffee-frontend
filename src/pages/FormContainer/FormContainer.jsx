@@ -66,23 +66,27 @@ const FormContainer = () => {
             {(formik) => (
               <Form>
                 <FormikControl control="input" label="Email" name="email" />
+
                 <FormikControl
                   control="input"
                   type="password"
                   label="Password"
                   name="password"
                 />
+
                 <FormikControl
                   control="input"
                   type="password"
                   label="Confirmed password"
                   name="confirmedPassword"
                 />
+
                 <FormikControl
                   control="textarea"
                   label="Description"
                   name="description"
                 />
+
                 <FormikControl
                   control="select"
                   label="Select a topic"
