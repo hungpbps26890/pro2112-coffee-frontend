@@ -13,9 +13,14 @@ const SelectAddress = ({ label, options, name, setValue }) => {
         id={name}
         name={name}
         className="form-select"
-        onClick={(e) => setValue(e.target.value)}
+        onClick={(e) =>
+          setValue({
+            id: Number.parseInt(e.target.value),
+            name: e.target.options[e.target.selectedIndex].text,
+          })
+        }
       >
-        <option value="">{`--Chọn ${label}`}</option>
+        <option value="">{`Choose ${label}`}</option>
         {options.map((option) => {
           return (
             <option key={`${name}-${option.value}`} value={option.value}>

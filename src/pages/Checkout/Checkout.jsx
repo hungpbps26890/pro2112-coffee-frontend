@@ -8,8 +8,20 @@ import * as Yup from "yup";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { postCreateOrder } from "../../services/OrderService";
 import { toast } from "react-toastify";
+import SelectAddress from "../../components/Address/SelectAddress";
+import {
+  apiGetPublicDistricts,
+  apiGetPublicProvinces,
+  apiGetPublicWards,
+} from "../../services/VNProvinceService";
 
 const Checkout = () => {
+  const [provinces, setProvinces] = useState([]);
+  const [province, setProvince] = useState({ id: null, name: "" });
+  const [districts, setDistricts] = useState([]);
+  const [district, setDistrict] = useState({ id: null, name: "" });
+  const [wards, setWards] = useState([]);
+  const [ward, setWard] = useState({ id: null, name: "" });
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [user, setUser] = useState();
   const [initialValues, setInitialValues] = useState({
@@ -69,6 +81,55 @@ const Checkout = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchPublicProvinces = async () => {
+      const response = await apiGetPublicProvinces();
+      console.log(response);
+
+      if (response.status === 200)
+        setProvinces(
+          response.data.results.map((province) => ({
+            key: province.province_name,
+            value: province.province_id,
+          }))
+        );
+    };
+
+    fetchPublicProvinces();
+  }, []);
+
+  useEffect(() => {
+    const fetchPublicDistricts = async (province) => {
+      const response = await apiGetPublicDistricts(province.id);
+
+      if (response.status === 200)
+        setDistricts(
+          response.data.results.map((district) => ({
+            key: district.district_name,
+            value: district.district_id,
+          }))
+        );
+    };
+
+    if (province.id) fetchPublicDistricts(province);
+  }, [province]);
+
+  useEffect(() => {
+    const fetchPublicWards = async (district) => {
+      const response = await apiGetPublicWards(district.id);
+
+      if (response.status === 200)
+        setWards(
+          response.data.results.map((ward) => ({
+            key: ward.ward_name,
+            value: ward.ward_id,
+          }))
+        );
+    };
+
+    if (district.id) fetchPublicWards(district);
+  }, [district]);
+
   const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
 
   const validationSchema = Yup.object({
@@ -90,13 +151,23 @@ const Checkout = () => {
     console.log("Form values: ", values);
 
     const data = {
-      address: values.address,
+      address: {
+        streetNumber: values.address.streetNumber,
+        ward: ward.name,
+        district: district.name,
+        province: province.name,
+      },
       paymentMethod: { id: values.paymentMethodId },
     };
 
     console.log("Data: ", data);
 
-    handleCreateOrder(data);
+    if (cart.cartItems.length > 0) {
+      handleCreateOrder(data);
+    } else {
+      toast.info("Your cart is empty, please add some drink to cart!");
+      navigator("/menu");
+    }
   };
 
   const handleCreateOrder = async (data) => {
@@ -245,24 +316,27 @@ const Checkout = () => {
 
                     <div className="row">
                       <div className="col-md-4">
-                        <FormikControl
-                          control="input"
+                        <SelectAddress
                           label="Ward"
+                          options={wards}
                           name="address.ward"
+                          setValue={setWard}
                         />
                       </div>
                       <div className="col-md-4">
-                        <FormikControl
-                          control="input"
+                        <SelectAddress
                           label="District"
+                          options={districts}
                           name="address.district"
+                          setValue={setDistrict}
                         />
                       </div>
                       <div className="col-md-4">
-                        <FormikControl
-                          control="input"
+                        <SelectAddress
                           label="Province"
+                          options={provinces}
                           name="address.province"
+                          setValue={setProvince}
                         />
                       </div>
                     </div>

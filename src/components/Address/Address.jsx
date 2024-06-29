@@ -10,11 +10,11 @@ import * as Yup from "yup";
 
 const Address = () => {
   const [provinces, setProvinces] = useState([]);
-  const [province, setProvince] = useState("");
+  const [province, setProvince] = useState({ id: null, name: "" });
   const [districts, setDistricts] = useState([]);
-  const [district, setDistrict] = useState("");
+  const [district, setDistrict] = useState({ id: null, name: "" });
   const [wards, setWards] = useState([]);
-  const [ward, setWard] = useState("");
+  const [ward, setWard] = useState({ id: null, name: "" });
 
   useEffect(() => {
     const fetchPublicProvinces = async () => {
@@ -35,7 +35,7 @@ const Address = () => {
 
   useEffect(() => {
     const fetchPublicDistricts = async (province) => {
-      const response = await apiGetPublicDistricts(province);
+      const response = await apiGetPublicDistricts(province.id);
 
       if (response.status === 200)
         setDistricts(
@@ -46,12 +46,12 @@ const Address = () => {
         );
     };
 
-    if (province !== "") fetchPublicDistricts(province);
+    if (province.id) fetchPublicDistricts(province);
   }, [province]);
 
   useEffect(() => {
     const fetchPublicWards = async (district) => {
-      const response = await apiGetPublicWards(district);
+      const response = await apiGetPublicWards(district.id);
 
       if (response.status === 200)
         setWards(
@@ -62,13 +62,13 @@ const Address = () => {
         );
     };
 
-    if (district !== "") fetchPublicWards(district);
+    if (district.id) fetchPublicWards(district);
   }, [district]);
 
   const initialValues = {
-    province: province,
-    district: district,
-    ward: district,
+    province: "",
+    district: "",
+    ward: "",
   };
 
   const validationSchema = Yup.object({
