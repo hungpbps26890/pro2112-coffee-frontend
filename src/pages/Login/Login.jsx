@@ -81,11 +81,21 @@ const Login = () => {
                       Cancel
                     </button>
                   </div>
-                  <div className="form-text">
-                    Create a new account?{" "}
-                    <Link to={"/register"} className="text-decoration-none">
-                      Click here
-                    </Link>
+                  <div className="d-flex justify-content-between">
+                    <div className="form-text">
+                      Create a new account?{" "}
+                      <Link to={"/register"} className="text-decoration-none">
+                        Click here
+                      </Link>
+                    </div>
+                    <div className="form-text">
+                      <Link
+                        to={"/forgot-password"}
+                        className="text-decoration-none ms-5"
+                      >
+                        Forgot Password?
+                      </Link>
+                    </div>
                   </div>
                 </Form>
               )}

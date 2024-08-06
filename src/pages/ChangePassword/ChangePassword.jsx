@@ -56,7 +56,7 @@ const ChangePassword = () => {
       <div className="row">
         <div className="card col-10 col-md-6 mx-auto shadow-sm border-0 rounded-4">
           <div className="card-body">
-            <h3 className="text-center">Register</h3>
+            <h3 className="text-center">Change Password</h3>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}

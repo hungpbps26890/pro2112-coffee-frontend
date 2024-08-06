@@ -8,3 +8,6 @@ export const putUpdateMyInfo = (data) => axios.put("/api/users/my-info", data);
 
 export const putChangePassword = (data) =>
   axios.put("/api/users/change-password", data);
+
+export const putForgotPassword = (data) =>
+  axios.put("/api/users/forgot-password", data);

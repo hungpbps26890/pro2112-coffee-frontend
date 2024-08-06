@@ -19,6 +19,7 @@ import Order from "./pages/Order/Order";
 import OrderDetails from "./pages/Order/OrderDetails";
 import OAuth2LoginHandler from "./pages/Login/OAuth2LoginHandler";
 import Address from "./components/Address/Address";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order" element={<Order />} />
           <Route path="/order-details/:id" element={<OrderDetails />} />
